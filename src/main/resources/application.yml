@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:kalah-dev
+    driverClassName: org.h2.Driver
+    username: kalah-dev
+    password: kalah-dev1
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
