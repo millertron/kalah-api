@@ -1,17 +1,17 @@
 package com.millertronics.kalahapi.game;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import com.millertronics.kalahapi.exceptions.IllegalGameMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class GameStatusCalculatorTest {
 
@@ -165,6 +165,32 @@ class GameStatusCalculatorTest {
         assertThat(newPits[5], equalTo(2));
         assertThat(newPits[6], equalTo(0));
         assertThat(newPits[7], equalTo(3));
+    }
+
+    @Test
+    @DisplayName("move with last stone added to empty player kalah pit should not add the stones from the opposite kalah pit")
+    public void move_stoneToEmptyPlayerKalah_shouldNot_addFromOpposite() throws IllegalGameMoveException {
+        when(gameEntity.getPits()).thenReturn(List.of(2, 2, 2, 0, 2, 2, 2, 2));
+        int[] newPits = gameStatusCalculator.redistributeStones(gameEntity, 1);
+        assertThat(newPits[0], equalTo(2));
+        assertThat(newPits[1], equalTo(0));
+        assertThat(newPits[2], equalTo(3));
+        assertThat(newPits[3], equalTo(1));
+        assertThat(newPits[4], equalTo(2));
+        assertThat(newPits[5], equalTo(2));
+        assertThat(newPits[6], equalTo(2));
+        assertThat(newPits[7], equalTo(2));
+
+        when(gameEntity.getPits()).thenReturn(List.of(2, 2, 2, 3, 2, 2, 0, 0));
+        newPits = gameStatusCalculator.redistributeStones(gameEntity, 5);
+        assertThat(newPits[0], equalTo(2));
+        assertThat(newPits[1], equalTo(2));
+        assertThat(newPits[2], equalTo(2));
+        assertThat(newPits[3], equalTo(3));
+        assertThat(newPits[4], equalTo(2));
+        assertThat(newPits[5], equalTo(0));
+        assertThat(newPits[6], equalTo(1));
+        assertThat(newPits[7], equalTo(1));
     }
 
     @Test

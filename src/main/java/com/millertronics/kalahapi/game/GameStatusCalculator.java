@@ -71,12 +71,13 @@ public class GameStatusCalculator {
             gamePits[index] = originalPits.get(index) + 1;
             updatedIndexes.add(index);
 
-            // if the last stone added was on an empty player-side pit, take all the stones
+            // if the last stone added was on an empty player-side, non-kalah pit, take all the stones
             // from the pit on the opposite side
             final boolean lastPitAddedWasEmpty = i == pitStones && gamePits[index] == 1;
             final boolean lastPitIsInPlayerSide = pitIsInPlayerSide(index, playerKalahIndex, kalahOne);
+            final boolean lastPitIsNonKalah = index != kalahOne && index != kalahTwo;
 
-            if (lastPitAddedWasEmpty && lastPitIsInPlayerSide) {
+            if (lastPitAddedWasEmpty && lastPitIsInPlayerSide && lastPitIsNonKalah) {
                 final int oppositeIndex = findOppositeIndex(index, originalPits.size());
                 gamePits[index] += originalPits.get(oppositeIndex);
                 gamePits[oppositeIndex] = 0;
